@@ -10,3 +10,21 @@
 2020-06-07 14:28:04 [[32minfo[39m]: 	Server is listening on localhost:8080 {
   "object": {}
 }
+2020-06-07 14:49:37 [[32minfo[39m]: 	Connected to the mongodb database {
+  "object": {}
+}
+2020-06-07 14:49:37 [[32minfo[39m]: 	Server is gracefully shutdown! {
+  "object": {
+    "code": "EADDRINUSE",
+    "errno": "EADDRINUSE",
+    "syscall": "listen",
+    "address": "127.0.0.1",
+    "port": 8080
+  }
+}
+2020-06-07 14:50:54 [[32minfo[39m]: 	Connected to the mongodb database {
+  "object": {}
+}
+2020-06-07 14:50:54 [[32minfo[39m]: 	Server is listening on localhost:8080 {
+  "object": {}
+}
