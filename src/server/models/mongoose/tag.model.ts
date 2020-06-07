@@ -4,15 +4,13 @@ interface ITag extends Document {
   name: string;
 }
 
-const tagSchema: Schema = new Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      max: 128,
-    },
+const tagSchema: Schema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    max: 128,
   },
-);
+});
 const Tag = mongoose.model<ITag>('Tag', tagSchema);
 
 tagSchema.virtual('id').get(function(this: ITag) {

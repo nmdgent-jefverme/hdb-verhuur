@@ -13,7 +13,7 @@ import {
   ItemController,
   RequestController,
   TagController,
-  UserController
+  UserController,
 } from '../controllers';
 
 import passport from 'passport';
@@ -83,7 +83,7 @@ class ApiRouter {
      * Tag routes
      */
     this.router.get('/tags', this.tagController.index);
-     /*
+    /*
      * Location routes
      */
     this.router.get('/locations', this.locationController.index);
@@ -93,7 +93,10 @@ class ApiRouter {
     this.router.get('/users', this.userController.index);
     this.router.get('/users/:id', this.userController.show);
     this.router.put('/user/updaterole/:id', this.userController.updateRole);
-    this.router.put('/user/updateprofile/:id', this.userController.updateProfile);
+    this.router.put(
+      '/user/updateprofile/:id',
+      this.userController.updateProfile,
+    );
     this.router.post('/auth/signup/', this.userController.signupLocal);
     this.router.post('/auth/signin/', this.userController.signInLocal);
     this.router.delete('/users/:id', this.userController.destroy);

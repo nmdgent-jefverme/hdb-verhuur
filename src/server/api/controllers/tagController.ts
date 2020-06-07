@@ -6,7 +6,6 @@ class TagController {
     const tags = await Tag.find().exec();
     return res.status(200).json(tags);
   };
-
 }
 
 export default TagController;

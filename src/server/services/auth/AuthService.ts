@@ -35,24 +35,27 @@ class AuthService {
   }
 
   private initializeFacebookStrategy() {
-    passport.use(new this.FacebookStrategy({
-      clientID: this.config.auth.facebook.clientId,
-      clientSecret: this.config.auth.facebook.clientSecret,
-      callbackURL: 'http://localhost:8080/api/auth/facebook/tryanderror',
-      profileFields: ['email', 'name']
-    },
-    function(accessToken, refreshToken, profile, done) {
-      const { email, first_name, last_name } = profile._json;
-      const userData = {
-        email,
-        firstName: first_name,
-        lastName: last_name
-      }
-      const user = new User(userData);
-      user.save();
-      return done(user);
-    }
-    ));
+    passport.use(
+      new this.FacebookStrategy(
+        {
+          clientID: this.config.auth.facebook.clientId,
+          clientSecret: this.config.auth.facebook.clientSecret,
+          callbackURL: 'http://localhost:8080/api/auth/facebook/tryanderror',
+          profileFields: ['email', 'name'],
+        },
+        function(accessToken, refreshToken, profile, done) {
+          const { email, first_name, last_name } = profile._json;
+          const userData = {
+            email,
+            firstName: first_name,
+            lastName: last_name,
+          };
+          const user = new User(userData);
+          user.save();
+          return done(user);
+        },
+      ),
+    );
   }
 
   private initializeLocalStrategy() {
@@ -71,12 +74,15 @@ class AuthService {
               return done(null, false, { message: 'No user by that email' });
             }
 
-            return user.comparePassword(password, (error: Error, isMatch: boolean) => {
-              if (!isMatch) {
-                return done(null, false);
-              }
-              return done(null, user);
-            });
+            return user.comparePassword(
+              password,
+              (error: Error, isMatch: boolean) => {
+                if (!isMatch) {
+                  return done(null, false);
+                }
+                return done(null, user);
+              },
+            );
           } catch (error) {
             return done(error, false);
           }

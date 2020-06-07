@@ -35,15 +35,14 @@ class RequestController {
     next: NextFunction,
   ): Promise<Response<any>> => {
     const { id } = req.params;
-    const request: IRequest = await RequestClass.findById(id).populate('items').populate('user').exec();
+    const request: IRequest = await RequestClass.findById(id)
+      .populate('items')
+      .populate('user')
+      .exec();
     return res.status(200).json(request);
   };
 
-  public store = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
+  public store = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const requestCreate = new RequestClass({
         rented_from: req.body.rented_from,
@@ -52,13 +51,13 @@ class RequestController {
         totalPrice: req.body.totalPrice,
         _userId: req.body.userId,
         _itemIds: req.body.itemsArray,
-      })
+      });
       const request = await requestCreate.save();
       return res.status(201).json(request);
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   update = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
@@ -66,9 +65,13 @@ class RequestController {
       const requestUpdate = {
         status: req.body.status,
       };
-      const updatedRequest = await RequestClass.findOneAndUpdate({ _id: id }, requestUpdate, {
-        new: true,
-      }).exec();
+      const updatedRequest = await RequestClass.findOneAndUpdate(
+        { _id: id },
+        requestUpdate,
+        {
+          new: true,
+        },
+      ).exec();
 
       if (!updatedRequest) {
         throw new Error('Camion niet gevonden.');

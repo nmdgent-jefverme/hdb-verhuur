@@ -9,7 +9,9 @@ class CamionController {
     next: NextFunction,
   ): Promise<Response<any>> => {
     const { id } = req.params;
-    const request: ICamion = await Camion.findById(id).populate('items').exec();
+    const request: ICamion = await Camion.findById(id)
+      .populate('items')
+      .exec();
     return res.status(200).json(request);
   };
 
@@ -21,7 +23,7 @@ class CamionController {
         rented_to: req.body.rented_to,
         _userId: req.body.userId,
         _itemIds: req.body._itemIds,
-        _id: req.body._id
+        _id: req.body._id,
       };
       const camion = await Camion.findOneAndUpdate({ _id: id }, camionUpdate, {
         new: true,

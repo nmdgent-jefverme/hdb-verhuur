@@ -1,7 +1,7 @@
 import { default as mongoose, Schema, Document } from 'mongoose';
 import { default as bcrypt } from 'bcrypt';
 
-import {ICamion} from './camion.model'
+import { ICamion } from './camion.model';
 
 interface ILocalProvider {
   password: string;
@@ -35,7 +35,7 @@ interface IUser extends Document {
   role: string;
   profile?: IProfile;
 
-  _camionId: ICamion['_id']; 
+  _camionId: ICamion['_id'];
 
   comparePassword(candidatePassword: String, cb: Function): void;
 }
@@ -131,10 +131,14 @@ userSchema.methods.comparePassword = function(
   cb: Function,
 ) {
   const user = this;
-  bcrypt.compare(candidatePassword, user.localProvider.password, (err, isMatch) => {
-    if (err) return cb(err, null);
-    return cb(null, isMatch);
-  });
+  bcrypt.compare(
+    candidatePassword,
+    user.localProvider.password,
+    (err, isMatch) => {
+      if (err) return cb(err, null);
+      return cb(null, isMatch);
+    },
+  );
 };
 
 const User = mongoose.model<IUser>('User', userSchema);

@@ -6,7 +6,6 @@ class CategoryController {
     const categories = await Category.find().exec();
     return res.status(200).json(categories);
   };
-
 }
 
 export default CategoryController;

@@ -106,14 +106,14 @@ class UserController {
     }
     const newCamion: ICamion = new Camion({
       rented_to: Date.now(),
-      rented_from: Date.now()
+      rented_from: Date.now(),
     });
     const camion: ICamion = await newCamion.save();
     const newUser: IUser = new User({
       email: email,
       role: 'user',
       localProvider: {
-        password: password
+        password: password,
       },
       profile: {
         firstName: req.body.fName,
@@ -123,9 +123,9 @@ class UserController {
         number: req.body.number,
         appartement: req.body.appartement,
         city: req.body.city,
-        postalCode: req.body.postalCode
+        postalCode: req.body.postalCode,
       },
-      _camionId: newCamion.id
+      _camionId: newCamion.id,
     });
 
     const user: IUser = await newUser.save();
@@ -175,7 +175,7 @@ class UserController {
     next: NextFunction,
   ): Promise<void> => {
     console.log(req.body);
-  }
+  };
 
   facebookSignin = async (
     req: Request,
@@ -184,9 +184,9 @@ class UserController {
   ): Promise<void> => {
     this.authService.passport.authenticate('facebook', {
       successRedirect: '/',
-      failureRedirect: '/login'
+      failureRedirect: '/login',
     });
-  }
+  };
 
   updateRole = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
@@ -219,8 +219,8 @@ class UserController {
           number: req.body.number,
           appartement: req.body.appartement,
           city: req.body.city,
-          postalCode: req.body.postalCode
-        }
+          postalCode: req.body.postalCode,
+        },
       };
       const updatedUser = await User.findOneAndUpdate({ _id: id }, userUpdate, {
         new: true,

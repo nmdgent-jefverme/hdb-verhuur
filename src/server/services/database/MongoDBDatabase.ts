@@ -85,21 +85,21 @@ class MongoDBDatabase {
   }
 
   private locationCreate = async (
-      name: string,
-      street: string,
-      city: string,
-      number: number,
-      lat: number,
-      lon: number,
-    ) => {
-    const location = new Location({ 
+    name: string,
+    street: string,
+    city: string,
+    number: number,
+    lat: number,
+    lon: number,
+  ) => {
+    const location = new Location({
       name,
       street,
       city,
       number,
       lat,
       lon,
-     });
+    });
 
     try {
       const newLocation = await location.save();
@@ -112,22 +112,26 @@ class MongoDBDatabase {
 
   private createLocations = async () => {
     const promises = [];
-    promises.push(this.locationCreate(
-      'Jogiterrein - MK2',
-      'Emiel Claeyslaan',
-      'Gent',
-      2,
-      51.044363, 
-      3.771657
-    ));
-    promises.push(this.locationCreate(
-      'Welpenterrein - MK1',
-      'Achterdries',
-      'Gent',
-      52,
-      51.042605, 
-      3.766988
-    ));
+    promises.push(
+      this.locationCreate(
+        'Jogiterrein - MK2',
+        'Emiel Claeyslaan',
+        'Gent',
+        2,
+        51.044363,
+        3.771657,
+      ),
+    );
+    promises.push(
+      this.locationCreate(
+        'Welpenterrein - MK1',
+        'Achterdries',
+        'Gent',
+        52,
+        51.042605,
+        3.766988,
+      ),
+    );
 
     return await Promise.all(promises);
   };
@@ -144,7 +148,7 @@ class MongoDBDatabase {
     appartment: string,
     city: string,
     postalCode: number,
-    camionId: string
+    camionId: string,
   ) => {
     const userDetail = {
       email,
@@ -160,9 +164,9 @@ class MongoDBDatabase {
         number,
         appartment,
         city,
-        postalCode
+        postalCode,
       },
-      _camionId: camionId
+      _camionId: camionId,
     };
 
     const user: IUser = new User(userDetail);
@@ -180,22 +184,27 @@ class MongoDBDatabase {
   private createUsers = async () => {
     const promises = [];
     // faker.setLocale('nl');
-    const camionId = await this.camionCreate(Date.now() + 1, Date.now() + Math.round(Math.random() * 20),);
-    
-    promises.push(this.userCreate(
-      'jefvermeireown@gmail.com',
-      'Azerty123',
-      'administrator',
-      'Jef',
-      'Vermeire',
-      'man',
-      'Gustaaf Callierlaan',
-      '225',
-      null,
-      'Gent',
-      9000,
-      camionId
-    ));
+    const camionId = await this.camionCreate(
+      Date.now() + 1,
+      Date.now() + Math.round(Math.random() * 20),
+    );
+
+    promises.push(
+      this.userCreate(
+        'jefvermeireown@gmail.com',
+        'Azerty123',
+        'administrator',
+        'Jef',
+        'Vermeire',
+        'man',
+        'Gustaaf Callierlaan',
+        '225',
+        null,
+        'Gent',
+        9000,
+        camionId,
+      ),
+    );
 
     /* for (let i = 0; i < 30; i++) {
       const gender = Math.round(Math.random());
@@ -221,10 +230,8 @@ class MongoDBDatabase {
     return await Promise.all(promises);
   };
 
-  private tagCreate = async (
-    name: string,
-  ) => {
-    const tag = new Tag({ 
+  private tagCreate = async (name: string) => {
+    const tag = new Tag({
       name,
     });
 
@@ -241,11 +248,7 @@ class MongoDBDatabase {
     const promises = [];
 
     for (let i = 0; i < 30; i++) {
-      promises.push(
-        this.tagCreate(
-          faker.lorem.word(),
-        ),
-      );
+      promises.push(this.tagCreate(faker.lorem.word()));
     }
 
     return await Promise.all(promises);
@@ -274,9 +277,7 @@ class MongoDBDatabase {
   private getRandomUser = () => {
     let user: IUser = null;
     if (this.users && this.users.length > 0) {
-      user = this.users[
-        Math.floor(Math.random() * this.users.length)
-      ];
+      user = this.users[Math.floor(Math.random() * this.users.length)];
     }
     return user;
   };
@@ -293,7 +294,7 @@ class MongoDBDatabase {
       status,
       totalPrice,
       _userId: this.getRandomUser()._id,
-      _itemIds: this.getRandomItemsAsArrayOfIds(5)
+      _itemIds: this.getRandomItemsAsArrayOfIds(5),
     };
 
     const request: IRequest = new Request(requestDetail);
@@ -304,7 +305,10 @@ class MongoDBDatabase {
 
       this.logger.info(`Request created with id: ${createdRequest._id}`, {});
     } catch (err) {
-      this.logger.error(`An error occurred when creating a request ${err}`, err);
+      this.logger.error(
+        `An error occurred when creating a request ${err}`,
+        err,
+      );
     }
   };
 
@@ -317,7 +321,7 @@ class MongoDBDatabase {
           Date.now() + 1,
           Date.now() + Math.round(Math.random() * 20),
           Status.pending,
-          Math.round(Math.random()*200)
+          Math.round(Math.random() * 200),
         ),
       );
     }
@@ -325,14 +329,11 @@ class MongoDBDatabase {
     return await Promise.all(promises);
   };
 
-  private camionCreate = async (
-    rented_from: number,
-    rented_to: number,
-  ) => {
+  private camionCreate = async (rented_from: number, rented_to: number) => {
     const camionDetail = {
       rented_from,
       rented_to,
-      _itemIds: this.getRandomItemsAsArrayOfIds(5)
+      _itemIds: this.getRandomItemsAsArrayOfIds(5),
     };
 
     const camion: ICamion = new Camion(camionDetail);
@@ -340,7 +341,7 @@ class MongoDBDatabase {
     try {
       const createdCamion = await camion.save();
       this.camions.push(createdCamion);
-      
+
       this.logger.info(`Camion created with id: ${createdCamion._id}`, {});
       return createdCamion._id;
     } catch (err) {
@@ -372,9 +373,7 @@ class MongoDBDatabase {
     const promises = [];
 
     for (let i = 0; i < 8; i++) {
-      promises.push(
-        this.categoryCreate(faker.lorem.word()),
-      );
+      promises.push(this.categoryCreate(faker.lorem.word()));
     }
 
     return await Promise.all(promises);
@@ -388,11 +387,11 @@ class MongoDBDatabase {
         Math.floor(Math.random() * nTags),
         1,
       )[0];
-      
+
       arrayOfIds.push(removedTag._id);
     }
     return arrayOfIds;
-  };
+  }
 
   private getRandomItemsAsArrayOfIds(nItems: number) {
     const tempItems = JSON.parse(JSON.stringify(this.items)) as Array<IItem>;
@@ -405,7 +404,7 @@ class MongoDBDatabase {
       arrayOfIds.push(removedTag._id);
     }
     return arrayOfIds;
-  };
+  }
 
   private itemCreate = async (
     name: string,
@@ -423,7 +422,7 @@ class MongoDBDatabase {
       _categoryId: this.getRandomCategory(),
       _locationId: this.getRandomLocation(),
       _tagIds: this.getRandomTagsAsArrayOfIds(
-        Math.floor(Math.random() * this.tags.length)
+        Math.floor(Math.random() * this.tags.length),
       ),
     };
 
@@ -447,7 +446,7 @@ class MongoDBDatabase {
         this.itemCreate(
           faker.lorem.word(),
           Math.random() >= 0.5,
-          Math.round(Math.random()*20),
+          Math.round(Math.random() * 20),
           faker.lorem.paragraph(),
           faker.internet.avatar(),
         ),
@@ -467,7 +466,6 @@ class MongoDBDatabase {
         return Location.find().exec();
       });
 
-    
     this.tags = await Tag.estimatedDocumentCount()
       .exec()
       .then(async count => {
@@ -484,8 +482,8 @@ class MongoDBDatabase {
           await this.createCategories();
         }
         return Category.find().exec();
-      });      
-      this.items = await Item.estimatedDocumentCount()
+      });
+    this.items = await Item.estimatedDocumentCount()
       .exec()
       .then(async count => {
         if (count === 0) {
@@ -493,23 +491,23 @@ class MongoDBDatabase {
         }
         return Item.find().exec();
       });
-      this.requests = await Request.estimatedDocumentCount()
-        .exec()
-        .then(async count => {
-          if (count === 0) {
-            await this.createRequests();
-          }
-          return Request.find().exec();
-        });
-        
+    this.requests = await Request.estimatedDocumentCount()
+      .exec()
+      .then(async count => {
+        if (count === 0) {
+          await this.createRequests();
+        }
+        return Request.find().exec();
+      });
+
     this.users = await User.estimatedDocumentCount()
-    .exec()
-    .then(async count => {
-      if (count === 0) {
-        await this.createUsers();
-      }
-      return User.find().exec();
-    });
+      .exec()
+      .then(async count => {
+        if (count === 0) {
+          await this.createUsers();
+        }
+        return User.find().exec();
+      });
   };
 }
 

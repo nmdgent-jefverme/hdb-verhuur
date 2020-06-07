@@ -8,16 +8,16 @@ class ItemController {
       let items;
 
       if (limit && skip) {
-        const options:any = {
+        const options: any = {
           limit: parseInt(limit, 10) || 10,
           page: parseInt(skip, 10) || 1,
           sort: { _createdAt: -1 },
-          where: { _deletedAt: null},
+          where: { _deletedAt: null },
           populate: ['tags', 'category', 'location'],
         };
         items = await Item.paginate({}, options);
       } else if (category) {
-        items = await Item.find({ _categoryId: category}, (err, Item) => {
+        items = await Item.find({ _categoryId: category }, (err, Item) => {
           // console.log(Item);
           return Item;
         })
@@ -49,18 +49,14 @@ class ItemController {
   ): Promise<Response<any>> => {
     const { id } = req.params;
     const item: IItem = await Item.findById(id)
-    .populate('tags')
-    .populate('location')
-    .populate('category')
-    .exec();
+      .populate('tags')
+      .populate('location')
+      .populate('category')
+      .exec();
     return res.status(200).json(item);
   };
 
-  public store = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
+  public store = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const itemCreate = new Item({
         name: req.body.name,
@@ -70,8 +66,8 @@ class ItemController {
         _categoryId: req.body.categoryId,
         _tagIds: req.body.tagIds,
         _locationId: req.body.locationId,
-        rented: false
-      })
+        rented: false,
+      });
       const item = await itemCreate.save();
       return res.status(201).json(item);
     } catch (error) {
@@ -91,7 +87,7 @@ class ItemController {
         _tagIds: req.body.tagIds,
         _locationId: req.body.locationId,
         _modifiedAt: Date.now(),
-        rented: false
+        rented: false,
       };
       const item = await Item.findOneAndUpdate({ _id: id }, itemUpdate, {
         new: true,

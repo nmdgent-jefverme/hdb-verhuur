@@ -7,7 +7,7 @@ enum Status {
   completed = 'completed',
   rejected = 'rejected',
   pending = 'pending',
-  accepted = 'accepted'
+  accepted = 'accepted',
 }
 
 interface IRequest extends Document {
@@ -20,7 +20,7 @@ interface IRequest extends Document {
   _modifiedAt: number;
   _deletedAt: number;
 
-  _userId: IUser['_id']; 
+  _userId: IUser['_id'];
   _itemIds: Array<IItem['_id']>;
 }
 
@@ -41,11 +41,13 @@ const requestSchema: Schema = new Schema(
       ref: 'User',
       required: false,
     },
-    _itemIds: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Item',
-      required: false,
-    }],
+    _itemIds: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Item',
+        required: false,
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
@@ -72,6 +74,9 @@ requestSchema.virtual('items', {
 });
 
 requestSchema.plugin(mongoosePaginate);
-const Request = mongoose.model<IRequest, IRequestModel>('Request', requestSchema);
+const Request = mongoose.model<IRequest, IRequestModel>(
+  'Request',
+  requestSchema,
+);
 
 export { IRequest, Request, requestSchema, Status };

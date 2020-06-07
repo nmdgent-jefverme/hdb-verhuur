@@ -19,11 +19,13 @@ const camionSchema: Schema = new Schema(
     _modifiedAt: { type: Number, required: false, default: null },
     _deletedAt: { type: Number, required: false, default: null },
 
-    _itemIds: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Item',
-      required: false,
-    }],
+    _itemIds: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Item',
+        required: false,
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
