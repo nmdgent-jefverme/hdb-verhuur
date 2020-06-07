@@ -67,6 +67,7 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
+    "start": "node app.js",
     "build": "rimraf ./dist && tsc --build tsconfig.json && cpy \"**/*.*\" --cwd=src/server/views ../../../dist/server/views --parents && cpy \"**/*.*\" --cwd=src/server/static ../../../dist/server/static --parents",
     "lint": "tslint --project tsconfig.json",
     "prettier:base": "prettier --parser typescript --single-quote",
